@@ -1,0 +1,7 @@
+name: dide
+channels:
+  - javascript
+dependencies:
+  - gulp
+  - bower
+  - nwjs

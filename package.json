@@ -1,0 +1,11 @@
+{
+  "name": "dide",
+  "version": "0.1.0",
+  "description": "Data IDE",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Continuum Analytics",
+  "license": "BSD"
+}
