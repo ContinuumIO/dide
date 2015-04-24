@@ -2,10 +2,20 @@
   "name": "dide",
   "version": "0.1.0",
   "description": "Data IDE",
-  "main": "index.js",
+  "repository": "git://github.com/ContinuumIO/dide.git",
+  "main": "index.html",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Continuum Analytics",
-  "license": "BSD"
+  "license": "BSD",
+  "dependencies": {
+    "backbone": "^1.1.2",
+    "coffee-script": "^1.9.2",
+    "jquery": "^2.1.3",
+    "node-jsx": "^0.13.2",
+    "react": "^0.13.2",
+    "react-ace": "^1.1.7",
+    "underscore": "^1.8.3"
+  }
 }
