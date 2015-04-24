@@ -1,7 +1,6 @@
 _ = require "underscore"
 $ = require "jquery"
 
-require("node-jsx").install()
 
 setupGlobals = (g, win) ->
   g = _.extend g,
