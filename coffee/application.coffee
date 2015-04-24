@@ -1,6 +1,6 @@
 _ = require "underscore"
 $ = require "jquery"
-
+{AppDispatcher} = require "./dispatchers"
 
 setupGlobals = (g, win) ->
   g = _.extend g,
@@ -8,22 +8,10 @@ setupGlobals = (g, win) ->
     document: win.window.document
     navigator: win.window.navigator
 
-onChange = ->
-  console.log "onChange", arguments
-
 module.exports = (gui) ->
   win = gui.Window.get()
   win.showDevTools()
 
   $(window).ready ->
     setupGlobals global, win
-
-    React = require "react"
-    AceEditor = require "react-ace"
-
-    editor = React.createElement AceEditor,
-      onChange: onChange
-      name: "editor"
-      mode: "markdown"
-      theme: "github"
-    React.render editor, window.document.body
+    require("./components/app")(window.document.body)
