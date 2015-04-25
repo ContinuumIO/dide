@@ -1,5 +1,9 @@
+_ = require "underscore"
 Backbone = require "backbone"
 {AppDispatcher} = require "../dispatchers"
+marked = require "marked"
+Q = require "q"
+ipython = require "../utils/ipython"
 
 AppDispatcher.register (payload) ->
   switch payload.actionType
@@ -9,7 +13,15 @@ AppDispatcher.register (payload) ->
 
 
 class Card extends Backbone.Model
-
+  render: ->
+    deferred = Q.defer()
+    if @get "isCode"
+      ipython.execute @get "raw"
+        .then deferred.resolve
+    else
+      _.defer =>
+        deferred.resolve marked @get "raw"
+    deferred.promise
 
 class CardStack extends Backbone.Collection
   parse: (raw) ->
@@ -22,11 +34,15 @@ class CardStack extends Backbone.Collection
         data.push line.trim()
         continue
 
-      @add new Card raw: (data.join "\n").trim()
+      @add new Card
+        raw: (data.join "\n").trim()
+        isCode: !indented
       data = [line.trim(), ]
       previous = indented
 
-    @add new Card raw: (data.join "\n").trim()
+    @add new Card
+      raw: (data.join "\n").trim()
+      isCode: indented # TODO ??
 
 
 module.exports =

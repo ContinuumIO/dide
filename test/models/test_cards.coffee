@@ -1,7 +1,9 @@
 helpers = require "../helpers"
+_ = require "underscore"
+Q = require "q"
 cards = helpers.rewire "models/cards"
 
-{expect} = helpers
+{expect, sinon} = helpers
 
 describe "CardStack", ->
   describe "simple markdown", ->
@@ -53,4 +55,57 @@ describe "CardStack", ->
       expected = "More *Markdown* here"
       expect(third.get "raw").to.equal expected
 
+    it "Should have isCode set to false on first model", ->
+      expect(stack.at(0).get "isCode").to.be.false
+
+    it "should have isCode set to true on second model", ->
+      expect(stack.at(1).get "isCode").to.be.true
+
+    it "Should have isCode set to false on third model", ->
+      expect(stack.at(2).get "isCode").to.be.false
+
 describe "Card", ->
+  describe "markdown", ->
+    markdown = "Some basic markdown #{helpers.random()}"
+
+    it "should have original text available as raw", ->
+      card = new cards.Card raw: markdown
+      expect(card.get "raw").to.equal markdown
+
+    it "should return a promise when calling render", ->
+      card = new cards.Card raw: markdown
+      render = card.render()
+      expect(card.render()).to.have.property "then"
+
+    it "should fulfill the promise with rendered code", ->
+      card = new cards.Card raw: markdown
+      expected = "<p>#{markdown}</p>\n"
+      expect(card.render()).to.eventually.equal expected
+
+  describe "code", ->
+    code = "import sys\nprint(sys.version)"
+
+    it "should have original code available as raw", ->
+      card = new cards.Card raw: code
+      expect(card.get "raw").to.equal code
+
+    it "should return a promise when calling render", ->
+      card = new cards.Card raw: code
+      render = card.render()
+      expect(card.render()).to.have.property "then"
+
+    it "should resolve with result of dispatched execution", (done) ->
+      randomReturn = "random return: #{helpers.random()}"
+      execute = sinon.stub()
+      execute.resolves randomReturn
+
+      mocks =
+        ipython:
+          execute: execute
+
+      cards.__with__(mocks) ->
+        card = new cards.Card raw: code, isCode: true
+        card.render()
+        expect(card.render()).to.eventually.equal(randomReturn).then ->
+          expect(execute).to.have.been.calledWith code
+          done()
