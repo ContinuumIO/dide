@@ -64,6 +64,35 @@ describe "CardStack", ->
     it "Should have isCode set to false on third model", ->
       expect(stack.at(2).get "isCode").to.be.false
 
+  describe "calling parse again", ->
+    stack = null
+    markdown = [
+      "# Header here"
+      ""
+      "This is some paragraph text"
+      ""
+      "    import sys"
+      "    print(sys.version)"
+      ""
+      "More *Markdown* here."
+      "Some paragraphs here"
+    ].join "\n"
+
+    before ->
+      stack = new cards.CardStack()
+      stack.parse markdown
+
+    it "should be the same length", ->
+      originalLength = stack.models.length
+      stack.parse markdown
+      expect(stack.models.length).to.equal originalLength
+
+    it "should provide the same model when parsing the same content", ->
+      first = stack.at(0)
+      stack.parse markdown
+      firstAgain = stack.at(0)
+      expect(first).to.deep.equal firstAgain
+
 describe "Card", ->
   describe "markdown", ->
     markdown = "Some basic markdown #{helpers.random()}"

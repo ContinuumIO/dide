@@ -24,7 +24,15 @@ class Card extends Backbone.Model
     deferred.promise
 
 class CardStack extends Backbone.Collection
+  getOrAdd: (index, attributes) ->
+    card = @at index
+    if card
+      card.set attributes
+    else
+      @add new Card attributes
+
   parse: (raw) ->
+    currentIndex = 0
     data = []
     previous = false
     for line in raw.split "\n"
@@ -34,15 +42,17 @@ class CardStack extends Backbone.Collection
         data.push line.trim()
         continue
 
-      @add new Card
+      @getOrAdd currentIndex,
         raw: (data.join "\n").trim()
         isCode: !indented
+
+      currentIndex++
       data = [line.trim(), ]
       previous = indented
 
-    @add new Card
+    @getOrAdd currentIndex,
       raw: (data.join "\n").trim()
-      isCode: indented # TODO ??
+      isCode: indented  # TODO Why is this not inverted here?
 
 
 module.exports =
