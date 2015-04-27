@@ -6,6 +6,9 @@ marked = require "marked"
 marked.setOptions
   gfm: true
 
+rawHtml = (html) ->
+  (span {dangerouslySetInnerHTML: {__html: html}})
+
 PreviewPane = React.createClass
   displayName: "PreviewPane"
 
@@ -25,8 +28,7 @@ PreviewPane = React.createClass
         @setState content: payload.content
 
   getRenderedContent: ->
-    rendered = marked @state.content
-    (span {dangerouslySetInnerHTML: {__html: rendered}})
+    rawHtml marked @state.content
 
   render: ->
     (div {className: "preview-container"},
