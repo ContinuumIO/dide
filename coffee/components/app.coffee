@@ -3,17 +3,21 @@ React = require "react"
 AceEditor = require "react-ace"
 {AppDispatcher} = require "../dispatchers"
 {PreviewPane} = require "./preview"
+{CardStack} = require "../models/cards"
 
 
 Application = React.createClass
   displayName: "Application"
 
   renderEditor: ->
+    stack = new CardStack()
     React.createElement AceEditor,
       onChange: (newContent) ->
+        stack.parse newContent
         AppDispatcher.dispatch
           actionType: "content:changed"
           content: newContent
+          stack: stack
       name: "editor"
       mode: "markdown"
       theme: "github"
