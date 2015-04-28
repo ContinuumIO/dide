@@ -1,10 +1,29 @@
 _ = require "underscore"
 Q = require "q"
+http = require "http"
 
 execute = (code) ->
   deferred = Q.defer()
-  _.defer ->
-    deferred.resolve "<code><pre>#{code}</pre></code>"
+  options =
+    method: "POST"
+    hostname: "127.0.0.1"
+    port: 5151
+    path: "/"
+    headers:
+      "Content-Type": "text/plain"
+      "Content-Length": code.length
+
+  req = http.request options, (res) ->
+    raw = ""
+    res.setEncoding "utf8"
+    res.on "data", (chunk) ->
+      raw += chunk
+    res.on "end", ->
+      data = JSON.parse raw
+      deferred.resolve "<code><pre>#{data.output}</code>"
+  req.write code
+  req.end()
+
   deferred.promise
 
 module.exports =
