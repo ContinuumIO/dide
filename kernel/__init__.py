@@ -26,6 +26,8 @@ import sys
 
 __dirname = os.path.dirname(os.path.abspath(__file__))
 
+DEBUG = os.getenv("DEBUG", False)
+
 
 # explanation of this in `complete` function
 autocomplete_patch = """
@@ -73,7 +75,10 @@ def __get_variables():
 
 
 class Kernel(object):
-    def __init__(self, active_dir):
+    def __init__(self, active_dir, debug=DEBUG):
+        self.debug = debug
+        self.replies = []  # Here for debugging
+
         # kernel config is stored in a dot file with the active directory
         config = os.path.join(
             active_dir,
@@ -133,6 +138,8 @@ class Kernel(object):
         while True:
             try:
                 reply = self.client.get_iopub_msg(timeout=timeout)
+                if self.debug:
+                    self.replies.append(reply)
             except Empty:
                 continue
 
