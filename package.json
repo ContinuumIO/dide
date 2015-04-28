@@ -4,6 +4,10 @@
   "description": "Data IDE",
   "repository": "git://github.com/ContinuumIO/dide.git",
   "main": "index.html",
+  "window": {
+    "toolbar": false,
+    "title": "Anaconda Data IDE"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
