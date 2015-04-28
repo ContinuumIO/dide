@@ -33,7 +33,5 @@ Application = React.createClass
 
 
 module.exports = (target) ->
-  console.log "hi"
   app = React.createElement Application
-  console.log app
   React.render app, target

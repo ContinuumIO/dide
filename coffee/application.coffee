@@ -11,12 +11,9 @@ setupGlobals = (g, win) ->
 
 configureReload = (document) ->
   client = net.connect {port: 35729}, ->
-    console.debug "livereload server detected, adding"
     script = document.createElement "script"
     script.src = "http://localhost:35729/livereload.js"
     document.body.appendChild script
-  client.on "error", ->
-    console.debug "no livereload server detected, skipping"
 
 module.exports = (gui) ->
   win = gui.Window.get()

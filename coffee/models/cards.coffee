@@ -15,6 +15,7 @@ AppDispatcher.register (payload) ->
 class Card extends Backbone.Model
   render: ->
     deferred = Q.defer()
+    # TODO What's a better way to discover what can handle it?
     if @get "isCode"
       ipython.execute @get "raw"
         .then deferred.resolve
@@ -36,6 +37,7 @@ class CardStack extends Backbone.Collection
     data = []
     previous = false
     for line in raw.split "\n"
+      # TODO Detect ``` lines as well
       indented = line[0...4] is "    "
 
       if previous is indented
