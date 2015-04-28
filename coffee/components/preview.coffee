@@ -1,4 +1,5 @@
-
+_ = require "underscore"
+$ = require "jquery"
 React = require "react"
 {div, span} = React.DOM
 marked = require "marked"
@@ -18,16 +19,22 @@ Card = React.createClass
     content: "Loading…"
 
   componentDidMount: ->
-    console.log "Card.componentDidMount fired"
+    @rerender = no
     @props.card.on "change", =>
-      console.log "change fired"
       @renderCard()
     @renderCard()
+
+  componentDidUpdate: ->
+    _.each @getDOMNode().getElementsByTagName("script"), (script) =>
+      if @rerender
+        eval script.innerHTML
+        @rerender = no
+
 
   renderCard: ->
     @props.card.render()
       .then (content) =>
-        console.log "got rendered content back: #{content}"
+        @rerender = true
         @setState content: content
 
   render: ->
