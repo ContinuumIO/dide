@@ -19,6 +19,13 @@ module.exports = (gui) ->
   win = gui.Window.get()
   win.showDevTools()
 
+  nativeMenuBar = new gui.Menu type: "menubar"
+  try
+    nativeMenuBar.createMacBuiltin "Dide"
+    win.menu = nativeMenuBar
+  catch ex
+    console.log ex.message
+
   $(window).ready ->
     setupGlobals global, win
     configureReload win.window.document
