@@ -33,6 +33,8 @@ class CardStack extends Backbone.Collection
       @add new Card attributes
 
   parse: (raw) ->
+    trim = @models.length > 0
+
     currentIndex = 0
     data = []
     previous = false
@@ -55,6 +57,7 @@ class CardStack extends Backbone.Collection
     @getOrAdd currentIndex,
       raw: (data.join "\n").trim()
       isCode: indented  # TODO Why is this not inverted here?
+    @models = _.without @models, @models[currentIndex + 1..]... if trim
 
 
 module.exports =

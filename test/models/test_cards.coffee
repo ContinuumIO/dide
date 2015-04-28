@@ -93,6 +93,11 @@ describe "CardStack", ->
       firstAgain = stack.at(0)
       expect(first).to.deep.equal firstAgain
 
+    it "should remove any models that aren't present", ->
+      stack.parse "Just one *Markdown* item now"
+      expect(stack.models.length).to.equal 1
+
+
 describe "Card", ->
   describe "markdown", ->
     markdown = "Some basic markdown #{helpers.random()}"
