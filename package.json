@@ -6,7 +6,9 @@
   "main": "index.html",
   "window": {
     "toolbar": false,
-    "title": "Anaconda Data IDE"
+    "title": "Anaconda Data IDE",
+    "width": 1000,
+    "height": 600
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
