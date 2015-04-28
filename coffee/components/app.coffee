@@ -26,9 +26,9 @@ Application = React.createClass
     React.createElement PreviewPane
 
   render: ->
-    (div {className: "row"},
-      (div {className: "columns medium-6"}, @renderEditor()),
-      (div {className: "columns medium-6"}, @renderPreview()),
+    (div {className: "dide-container"},
+      (div {className: "editor"}, @renderEditor()),
+      (div {className: "preview"}, @renderPreview()),
     )
 
 

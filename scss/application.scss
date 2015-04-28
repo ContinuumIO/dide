@@ -1,3 +1,25 @@
 $row-width: 100%;
 @import "../bower_components/foundation/scss/normalize";
 @import "../bower_components/foundation/scss/foundation";
+
+
+.dide-container {
+  @include grid-row();
+
+  .editor, .preview {
+    @include grid-column(6);
+    padding: 0;
+  }
+}
+
+.preview-container {
+  padding: $column-gutter / 2;
+  padding-top: 0;
+
+  code {
+    white-space: nowrap;
+    background-color: $smoke;
+    display: block;
+    margin-bottom: $column-gutter / 2;
+  }
+}

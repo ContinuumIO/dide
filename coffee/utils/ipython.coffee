@@ -20,7 +20,7 @@ execute = (code) ->
       raw += chunk
     res.on "end", ->
       data = JSON.parse raw
-      deferred.resolve "<code><pre>#{data.output}</code>"
+      deferred.resolve "<code><pre>#{data.output}</pre></code>"
   req.write code
   req.end()
 
