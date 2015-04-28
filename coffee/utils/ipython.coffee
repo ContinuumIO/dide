@@ -20,7 +20,11 @@ execute = (code) ->
       raw += chunk
     res.on "end", ->
       data = JSON.parse raw
-      deferred.resolve "<code><pre>#{data.output}</pre></code>"
+      # TODO deal with images
+      if data.html?
+        deferred.resolve data.html
+      else
+        deferred.resolve "<code><pre>#{data.output}</pre></code>"
   req.write code
   req.end()
 

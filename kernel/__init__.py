@@ -152,7 +152,10 @@ class Kernel(object):
                 output['output'] = reply['content']['data'].get('text/plain',
                                                                 '')
             elif reply['header']['msg_type'] == "display_data":
-                output['image'] = reply['content']['data'].get('image/png', '')
+                if 'image/png' in reply['content']['data']:
+                    output['image'] = reply['content']['data']['image/png']
+                if 'text/html' in reply['content']['data']:
+                    output['html'] = reply['content']['data']['text/html']
             elif reply['header']['msg_type'] == "stream":
                 output['output'] = reply['content'].get('text', '')
             elif reply['header']['msg_type'] == "error":
